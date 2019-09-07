@@ -1,44 +1,89 @@
-// Named function
+// Three ways of having functions
+// Named functions
 function add(num1, num2) {
     return num1 + num2;
 }
-// arrow function
-let sub = (num1, num2) => {
-    return num1 - num2;
+// Arrow functions
+let arrowAdd = (num1, num2) => {
+    return num1 + num2;
 };
-// anonymous function
-setTimeout(() => {
-    console.log('Printed');
-}, 5000);
-// optional parameters => it should be the last one,
+//anonymous functions
+setTimeout(function () { console.log(3); }, 1000);
+setTimeout(function () {
+    console.log('EE');
+}, 10000);
+// Three ways of passing parameters
+// Optional parameter: Always the last one.
 {
-    function addition(num1, num2, num3) {
+    function sum(num1, num2 = 3, num3) {
         if (num3) {
             return num1 + num2 + num3;
         }
         return num1 + num2;
     }
-    console.log(addition(1, 2, 3));
-    console.log(addition(1, 2));
+    let result = sum(2, 3); // 5
+    let anotherResult = sum(2, 3, 4); // 9
+    console.log(result);
+    console.log(anotherResult);
 }
-// default parameters => explicit undefined
+// Default parameter: Need not be the last one. Explicitly pass undefined if it is in between
 {
-    function addition1(num1, num2 = 3, num3) {
-        return num1 + num2 + num3;
+    function sum(num1, num2 = 3, num3 = 1) {
+        if (num3) {
+            return num1 + num2 + num3;
+        }
+        return num1 + num2;
     }
-    console.log(addition1(1, 2, 3));
-    console.log(addition1(1, 2));
-    console.log(addition1(1));
+    let result = sum(2, undefined, 3); // 8
+    let anotherResult = sum(2, 5); // 8
+    console.log(result);
+    console.log(anotherResult);
 }
-// Rest parameters => explicit undefined
+// Rest parameter: If the number of parameters are not know before.
 {
-    function sum(...num) {
+    function sum(...numbers) {
         let sum = 0;
-        num.forEach(ele => sum += ele);
+        numbers.forEach(ele => sum += ele);
         return sum;
     }
-    console.log(sum(1, 2, 3));
-    console.log(sum(1, 2, 3, 3, 5));
-    console.log(sum(1, 2));
-    console.log(sum(1));
+    let result = sum(2, 3, 6, 4, 5); // 20
+    let anotherResult = sum(2, 5, 4); // 11
+    console.log(result);
+    console.log(anotherResult);
 }
+// overloading
+{
+    function sum(num1) {
+        return num1.toString();
+    }
+    console.log(sum(4));
+    console.log(sum('EEE'));
+}
+// Argument Type/ Order / Number / Return type
+{
+    function sum(num1, num2 = 0) {
+        return num1.toString() + num2;
+    }
+    console.log(sum(4));
+    console.log(sum('EEE', 4));
+}
+// function passed as argument to another function
+function add1(num1, num2, multiply) {
+    multiply(num1, num2);
+    return num1 + num2;
+}
+let g = add1(2, 3, ((s, t) => {
+    console.log(s + t);
+    return s + t;
+}));
+console.log(g);
+function greeter(fname, lname, age, isMinor) {
+    console.log(`${fname} ${lname} of age ${age} is`, isMinor(age) ? 'a Minor' : 'not a Minor');
+}
+var person = greeter("Nithya", "lakshmi", 22, (age) => {
+    if (age >= 18) {
+        return false;
+    }
+    return true;
+});
+person;
